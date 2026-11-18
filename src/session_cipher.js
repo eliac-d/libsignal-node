@@ -135,7 +135,6 @@ class SessionCipher {
         if (!sessions.length) {
             throw new errors.SessionError('No sessions available');
         }
-        const errs = [];
         for (const session of sessions) {
             try {
                 const plaintext = await this.doDecryptWhisperMessage(data, session);
@@ -145,12 +144,7 @@ class SessionCipher {
                     plaintext
                 };
             } catch (e) {
-                errs.push(e);
             }
-        }
-        console.error('Failed to decrypt message with any known session...');
-        for (const e of errs) {
-            console.error('Session error:' + e, e.stack);
         }
         throw new errors.SessionError('No matching sessions found for message');
     }
